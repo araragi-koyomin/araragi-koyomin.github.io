@@ -1,12 +1,12 @@
+---
 author: 往目琛
 pubDatetime: 2025-07-31T20:21:45Z
 title:  基本概念
 slug: basic-concepts-in-PL
 draft: false
 tags:
-
-- docs
-  description:
+    - docs
+description:
   《程序设计语言原理》第一章笔记
 
 ---
