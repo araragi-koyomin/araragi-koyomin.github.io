@@ -38,6 +38,6 @@ jobs:
       - name: "🚢 Deploy to GitHub Pages"
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # ✅ 使用 GitHub 自动提供的权限
+          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
