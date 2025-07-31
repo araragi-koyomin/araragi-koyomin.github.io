@@ -1,0 +1,43 @@
+name: Deploy by Astro
+
+on:
+  push:
+    branches: [ "astro-paper" ] # 🚨 每次向 astro-paper 分支 push 就触发部署
+
+jobs:
+  build:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "📦 Install pnpm"
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: "📦 Use Node.js ${{ matrix.node-version }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: "📦 Install dependencies"
+        run: pnpm install
+
+      - name: "🚀 Build the project"
+        run: pnpm run build
+
+      - name: "🚢 Deploy to GitHub Pages"
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }} # ✅ 使用 GitHub 自动提供的权限
+          publish_branch: gh-pages
+          publish_dir: ./dist
