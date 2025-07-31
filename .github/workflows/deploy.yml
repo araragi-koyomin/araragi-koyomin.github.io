@@ -2,7 +2,7 @@ name: Deploy by Astro
 
 on:
   push:
-    branches: [ "astro-paper" ] # 🚨 每次向 astro-paper 分支 push 就触发部署
+    branches: [ "main" ] # 🚨 每次向 astro-paper 分支 push 就触发部署
 
 jobs:
   build:
