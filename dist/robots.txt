@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://araragi-koyomin.github.io/sitemap-index.xml
