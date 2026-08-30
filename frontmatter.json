@@ -1,0 +1,533 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.framework.startCommand": "pnpm dev",
+  "frontMatter.global.timezone": "Asia/Shanghai",
+  "frontMatter.preview.host": "http://127.0.0.1:4321",
+  "frontMatter.preview.pathName": "/posts/{{pathToken.relPath}}",
+  "frontMatter.preview.trailingSlash": false,
+  "frontMatter.website.host": "https://araragi-koyomin.github.io",
+  "frontMatter.site.baseURL": "https://araragi-koyomin.github.io",
+  "frontMatter.git.enabled": false,
+  "frontMatter.dashboard.openOnStart": false,
+  "frontMatter.content.autoUpdateDate": false,
+  "frontMatter.content.defaultFileType": "md",
+  "frontMatter.content.supportedFileTypes": [
+    "md"
+  ],
+  "frontMatter.content.wysiwyg": false,
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "博客文章",
+      "path": "[[workspace]]/src/data/blog",
+      "excludeSubdir": false,
+      "excludePaths": [
+        "_*.*",
+        "**/_*.*"
+      ],
+      "previewPath": "/posts/{{pathToken.relPath}}",
+      "trailingSlash": false,
+      "contentTypes": [
+        "default"
+      ]
+    }
+  ],
+  "frontMatter.content.publicFolder": "src/assets/images",
+  "frontMatter.media.pasteBehavior": "dashboard",
+  "frontMatter.media.pasteFileName": "{filename}-{date}-{time}",
+  "frontMatter.media.contentTypes": [
+    {
+      "name": "default",
+      "fileTypes": [
+        "png",
+        "jpg",
+        "jpeg",
+        "webp",
+        "gif",
+        "svg"
+      ],
+      "fields": [
+        {
+          "title": "标题",
+          "name": "title",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "替代文字",
+          "name": "alt",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "说明",
+          "name": "caption",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "frontMatter.data.files": [
+    {
+      "id": "celesteCollections",
+      "title": "Celeste 地图合集",
+      "file": "[[workspace]]/src/data/celeste-collections.json",
+      "fileType": "json",
+      "labelField": "name",
+      "singleEntry": false,
+      "schema": {
+        "title": "地图合集",
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "color"
+        ],
+        "properties": {
+          "id": {
+            "title": "稳定编号",
+            "description": "使用不会随显示名称改变的英文小写编号，例如 spring-collab-2020。",
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "title": "显示名称",
+            "type": "string"
+          },
+          "color": {
+            "title": "标记颜色",
+            "description": "颜色始终与合集名称一起显示，不单独承担信息含义。",
+            "type": "string",
+            "enum": [
+              "neutral",
+              "sky",
+              "violet",
+              "rose",
+              "amber",
+              "emerald"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "frontMatter.templates.enabled": true,
+  "frontMatter.templates.folder": ".frontmatter/templates",
+  "frontMatter.templates.prefix": "",
+  "frontMatter.content.placeholders": [
+    {
+      "id": "publicationDateTime",
+      "value": "{{now}}"
+    }
+  ],
+  "frontMatter.snippets.wrapper.enabled": false,
+  "frontMatter.taxonomy.alignFilename": false,
+  "frontMatter.taxonomy.customTaxonomy": [
+    {
+      "id": "subcategories",
+      "options": [
+        "programming-languages",
+        "interviews",
+        "agents",
+        "leetcode",
+        "celeste",
+        "minecraft",
+        "steam"
+      ]
+    }
+  ],
+  "frontMatter.taxonomy.fieldGroups": [
+    {
+      "id": "sourceLink",
+      "labelField": "label",
+      "fields": [
+        {
+          "title": "显示名称",
+          "name": "label",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "title": "网址",
+          "name": "url",
+          "type": "string",
+          "single": true,
+          "required": true
+        }
+      ]
+    }
+  ],
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "fileType": "md",
+      "pageBundle": false,
+      "clearEmpty": true,
+      "template": "[[workspace]]/.frontmatter/templates/blog.md",
+      "previewPath": "/posts/{{pathToken.relPath}}",
+      "trailingSlash": false,
+      "fields": [
+        {
+          "title": "标题",
+          "name": "title",
+          "type": "string",
+          "single": true,
+          "required": true
+        },
+        {
+          "title": "既有 Slug",
+          "name": "slug",
+          "description": "仅用于保留旧文章字段；试用阶段不生成、不改写，也不在面板中显示。",
+          "type": "string",
+          "single": true,
+          "hidden": true
+        },
+        {
+          "title": "摘要",
+          "name": "description",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "发布时间",
+          "name": "pubDatetime",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true,
+          "required": true
+        },
+        {
+          "title": "修改时间",
+          "name": "modDatetime",
+          "description": "修改旧文章时按需更新；试用阶段不会在保存时静默改写。",
+          "type": "datetime",
+          "isModifiedDate": true
+        },
+        {
+          "title": "主栏目",
+          "name": "category",
+          "type": "choice",
+          "default": "learning",
+          "choices": [
+            {
+              "id": "learning",
+              "title": "学习"
+            },
+            {
+              "id": "games",
+              "title": "游戏"
+            },
+            {
+              "id": "wota",
+              "title": "WOTA艺"
+            },
+            {
+              "id": "anime",
+              "title": "动漫"
+            }
+          ],
+          "required": true
+        },
+        {
+          "title": "子主题",
+          "name": "subcategory",
+          "description": "从现有稳定值中搜索选择；需要新值时可在分类面板中增加。",
+          "type": "taxonomy",
+          "taxonomyId": "subcategories",
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "内容类型",
+          "name": "contentType",
+          "type": "choice",
+          "default": "note",
+          "choices": [
+            {
+              "id": "note",
+              "title": "笔记"
+            },
+            {
+              "id": "experience",
+              "title": "经历"
+            },
+            {
+              "id": "solution",
+              "title": "题解"
+            },
+            {
+              "id": "review",
+              "title": "评价"
+            },
+            {
+              "id": "summary",
+              "title": "汇总"
+            },
+            {
+              "id": "work",
+              "title": "作品"
+            }
+          ],
+          "required": true
+        },
+        {
+          "title": "地图合集",
+          "name": "celesteCollection",
+          "description": "从集中注册表搜索选择；合集名称和颜色不在文章中重复维护。",
+          "type": "dataFile",
+          "dataFileId": "celesteCollections",
+          "dataFileKey": "id",
+          "dataFileValue": "name",
+          "required": true,
+          "when": {
+            "fieldRef": "subcategory",
+            "operator": "eq",
+            "value": "celeste"
+          }
+        },
+        {
+          "title": "地图难度",
+          "name": "celesteDifficulty",
+          "description": "按作者实际体验手动填写，不建立固定标签词表。",
+          "type": "string",
+          "single": true,
+          "required": true,
+          "when": {
+            "fieldRef": "subcategory",
+            "operator": "eq",
+            "value": "celeste"
+          }
+        },
+        {
+          "title": "主要 Gameplay",
+          "name": "celesteGameplay",
+          "description": "手动概括地图的主要玩法，可以填写多个要点。",
+          "type": "string",
+          "single": true,
+          "required": true,
+          "when": {
+            "fieldRef": "subcategory",
+            "operator": "eq",
+            "value": "celeste"
+          }
+        },
+        {
+          "title": "WOTA艺分区",
+          "name": "wotaSection",
+          "description": "只有 WOTA艺文章需要选择。",
+          "type": "choice",
+          "choices": [
+            {
+              "id": "my-works",
+              "title": "我的作品"
+            },
+            {
+              "id": "favorite-works",
+              "title": "我喜欢的作品"
+            },
+            {
+              "id": "chorus-techniques",
+              "title": "副歌技汇总"
+            }
+          ],
+          "required": true,
+          "when": {
+            "fieldRef": "category",
+            "operator": "eq",
+            "value": "wota"
+          }
+        },
+        {
+          "title": "标签",
+          "name": "tags",
+          "description": "可以搜索并选择已有标签，也可以增加新标签。",
+          "type": "tags"
+        },
+        {
+          "title": "草稿",
+          "name": "draft",
+          "type": "draft",
+          "default": true
+        },
+        {
+          "title": "首页重点展示",
+          "name": "featured",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "title": "进度",
+          "name": "status",
+          "type": "string",
+          "single": true
+        },
+        {
+          "title": "包含剧透",
+          "name": "spoiler",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "title": "个人评分",
+          "name": "rating",
+          "description": "作品或体验本身的个人评价，与推荐度不同；公开 Celeste 地图文章必须填写。",
+          "type": "number",
+          "numberOptions": {
+            "isDecimal": true,
+            "min": 0,
+            "max": 10,
+            "step": 0.1
+          }
+        },
+        {
+          "title": "个人推荐度",
+          "name": "recommendationScore",
+          "description": "向目标读者推荐的程度，与评分不同。",
+          "type": "number",
+          "numberOptions": {
+            "isDecimal": true,
+            "min": 0,
+            "max": 10,
+            "step": 0.1
+          }
+        },
+        {
+          "title": "来源链接",
+          "name": "sourceLinks",
+          "description": "可添加题目、地图、整合包或作品的显示名称与原始网址。",
+          "type": "block",
+          "fieldGroup": [
+            "sourceLink"
+          ]
+        },
+        {
+          "title": "文章顶部封面",
+          "name": "heroImage",
+          "description": "选择后显示在文章元数据与正文之间；请同时填写封面替代文字。",
+          "type": "image"
+        },
+        {
+          "title": "封面替代文字",
+          "name": "heroImageAlt",
+          "description": "封面图表达的内容。公开文章选择封面后必须填写，供无法查看图片的读者理解。",
+          "type": "string"
+        },
+        {
+          "title": "封面说明文字",
+          "name": "heroImageCaption",
+          "description": "可选，显示在封面图下方；适合填写图片来源、地点或简短说明。",
+          "type": "string"
+        },
+        {
+          "title": "社交分享图片",
+          "name": "ogImage",
+          "description": "只用于链接预览和页面元数据，不会自动显示在文章正文中。",
+          "type": "image"
+        }
+      ]
+    }
+  ],
+  "frontMatter.content.snippets": {
+    "目录": {
+      "title": "目录",
+      "description": "插入能够触发当前 Astro 自动目录的中文标题。",
+      "body": [
+        "## 目录",
+        ""
+      ]
+    },
+    "代码块": {
+      "title": "代码块",
+      "description": "插入带语言标记的围栏代码块。",
+      "body": [
+        "```[[language]]",
+        "[[&selection]]",
+        "```"
+      ],
+      "fields": [
+        {
+          "name": "language",
+          "title": "语言",
+          "type": "choice",
+          "choices": [
+            "text",
+            "typescript",
+            "javascript",
+            "python",
+            "java",
+            "cpp",
+            "c",
+            "json",
+            "yaml",
+            "bash",
+            "powershell"
+          ],
+          "default": "text"
+        },
+        {
+          "name": "selection",
+          "title": "代码",
+          "type": "string",
+          "default": "FM_SELECTED_TEXT"
+        }
+      ]
+    },
+    "行内数学公式": {
+      "title": "行内数学公式",
+      "description": "插入 KaTeX 行内公式。",
+      "body": "$[[&formula]]$",
+      "fields": [
+        {
+          "name": "formula",
+          "title": "公式",
+          "type": "string",
+          "default": "FM_SELECTED_TEXT"
+        }
+      ]
+    },
+    "块级数学公式": {
+      "title": "块级数学公式",
+      "description": "插入 KaTeX 块级公式。",
+      "body": [
+        "$$",
+        "[[&formula]]",
+        "$$"
+      ],
+      "fields": [
+        {
+          "name": "formula",
+          "title": "公式",
+          "type": "string",
+          "default": "FM_SELECTED_TEXT"
+        }
+      ]
+    },
+    "Markdown链接": {
+      "title": "Markdown链接",
+      "description": "插入普通来源或站内链接；文章搜索选择将在后续专用能力中补齐。",
+      "body": "[[&text]]([[&url]])",
+      "fields": [
+        {
+          "name": "text",
+          "title": "显示文字",
+          "type": "string",
+          "default": "FM_SELECTED_TEXT"
+        },
+        {
+          "name": "url",
+          "title": "网址",
+          "type": "string"
+        }
+      ]
+    },
+    "文章图片": {
+      "title": "文章图片",
+      "description": "从媒体面板插入 src/assets/images 中的图片。",
+      "body": "![{%alt%}](@/assets/images{%&mediaUrl%})",
+      "openingTags": "{%",
+      "closingTags": "%}",
+      "isMediaSnippet": true
+    }
+  }
+}

@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import ContentBrowseNav from "@/components/ContentBrowseNav.astro";
+import ContentCategoryNav from "@/components/ContentCategoryNav.astro";
+import ContentEmptyState from "@/components/ContentEmptyState.astro";
+import GameCategoryView from "@/components/GameCategoryView.astro";
+import WotaCategoryView from "@/components/WotaCategoryView.astro";
+import {
+  CONTENT_CATEGORIES,
+  type ContentCategoryDefinition,
+} from "@/constants/content";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
+
+export interface Props {
+  category: ContentCategoryDefinition;
+}
+
+export function getStaticPaths() {
+  return CONTENT_CATEGORIES.map(category => ({
+    params: { category: category.key },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const posts = await getCollection(
+  "blog",
+  ({ data }) => !data.draft && data.category === category.key
+);
+const sortedPosts = getSortedPosts(posts);
+const isWotaCategory = category.key === "wota";
+const isGamesCategory = category.key === "games";
+---
+
+<Layout
+  title={`${category.label} | ${SITE.title}`}
+  description={category.description}
+>
+  <Header />
+  <Main pageTitle={category.label} pageDesc={category.description} width="wide">
+    <ContentCategoryNav current={category.key} />
+    <div
+      class="grid gap-8 lg:grid-cols-[minmax(15rem,18rem)_minmax(0,1fr)] lg:items-start lg:gap-10"
+    >
+      <ContentBrowseNav category={category} posts={sortedPosts} />
+      <div class="min-w-0">
+        {
+          isWotaCategory ? (
+            <WotaCategoryView posts={sortedPosts} />
+          ) : isGamesCategory ? (
+            <GameCategoryView posts={sortedPosts} />
+          ) : sortedPosts.length > 0 ? (
+            <section
+              aria-labelledby="category-posts-title"
+              class="mx-0 max-w-none px-0"
+            >
+              <div class="flex flex-wrap items-baseline justify-between gap-3">
+                <h2 id="category-posts-title" class="text-xl font-semibold">
+                  栏目文章
+                </h2>
+                <p class="text-sm opacity-70">
+                  共 {sortedPosts.length} 篇，按最近更新排序
+                </p>
+              </div>
+              <ul class="divide-y divide-border">
+                {sortedPosts.map(data => (
+                  <Card variant="h3" {...data} />
+                ))}
+              </ul>
+            </section>
+          ) : (
+            <ContentEmptyState message={category.emptyMessage} />
+          )
+        }
+      </div>
+    </div>
+  </Main>
+  <Footer />
+</Layout>

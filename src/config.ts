@@ -1,10 +1,11 @@
 export const SITE = {
-  website: "https://araragi-koyomin.github.io", // replace this with your deployed domain
-  author: "araragi",
-  profile: "https://satnaing.dev/",
-  desc: "My website",
-  title: "wmc's home",
-  ogImage: "astropaper-og.jpg",
+  website: "https://araragi-koyomin.github.io",
+  author: "往目琛",
+  profile: "https://github.com/araragi-koyomin",
+  desc: "往目琛的个人图书馆，整理和分享学习、游戏、生活记录与个人文章。",
+  title: "私立直江津高校",
+  // An empty value makes general pages use the local dynamic `/og.png` route.
+  ogImage: "",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 4,
@@ -13,11 +14,11 @@ export const SITE = {
   showBackButton: true, // show back button in post detail
   editPost: {
     enabled: true,
-    text: "Edit page",
-    url: "https://github.com/satnaing/astro-paper/edit/main/",
+    text: "在 GitHub 上编辑",
+    url: "https://github.com/araragi-koyomin/araragi-koyomin.github.io/edit/main/",
   },
   dynamicOgImage: true,
-  dir: "ltr", // "rtl" | "auto"
-  lang: "en", // html lang code. Set this empty and default will be "en"
-  timezone: "Asia/Bangkok", // Default global timezone (IANA format) https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  dir: "ltr",
+  lang: "zh-CN",
+  timezone: "Asia/Shanghai",
 } as const;

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "standalone",
+    "name": "独立地图",
+    "color": "neutral"
+  },
+  {
+    "id": "canvas-contest",
+    "name": "画布竞赛（Canvas Contest）",
+    "color": "violet"
+  },
+  {
+    "id": "ssc-2024",
+    "name": "SSC 2024",
+    "color": "sky"
+  }
+]

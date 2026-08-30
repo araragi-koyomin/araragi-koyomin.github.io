@@ -1,0 +1,48 @@
+---
+import type { CelesteCollectionDefinition } from "@/constants/celeste";
+
+export interface Props {
+  collection: CelesteCollectionDefinition;
+}
+
+const { collection } = Astro.props;
+const colorClasses = {
+  neutral: {
+    badge: "border-slate-500/40 bg-slate-500/10",
+    dot: "bg-slate-500",
+  },
+  sky: {
+    badge: "border-sky-500/50 bg-sky-500/10",
+    dot: "bg-sky-500",
+  },
+  violet: {
+    badge: "border-violet-500/50 bg-violet-500/10",
+    dot: "bg-violet-500",
+  },
+  rose: {
+    badge: "border-rose-500/50 bg-rose-500/10",
+    dot: "bg-rose-500",
+  },
+  amber: {
+    badge: "border-amber-500/50 bg-amber-500/10",
+    dot: "bg-amber-500",
+  },
+  emerald: {
+    badge: "border-emerald-500/50 bg-emerald-500/10",
+    dot: "bg-emerald-500",
+  },
+} as const;
+const classes = colorClasses[collection.color];
+---
+
+<span
+  class:list={[
+    "inline-flex max-w-full items-center gap-2 rounded-full border px-2.5 py-1 text-sm font-medium",
+    classes.badge,
+  ]}
+>
+  <span
+    aria-hidden="true"
+    class:list={["size-2.5 shrink-0 rounded-full", classes.dot]}></span>
+  <span class="min-w-0 break-words">{collection.name}</span>
+</span>

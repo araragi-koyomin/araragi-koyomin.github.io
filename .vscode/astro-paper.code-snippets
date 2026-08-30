@@ -1,34 +1,72 @@
 {
-  "Frontmatter": {
+  "博客 Frontmatter": {
     "scope": "markdown",
     "prefix": "frontmatter",
     "body": [
       "---",
-      "author: $1",
       "pubDatetime: $CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND.000$CURRENT_TIMEZONE_OFFSET",
-      "modDatetime: $3",
-      "title: $4",
-      "featured: ${5|false,true|}",
-      "draft: ${6|true,false|}",
+      "title: ${1:文章标题}",
+      "draft: ${2|true,false|}",
       "tags:",
-      "  - $7",
-      "description: $8",
-      "---",
+      "  - ${3:标签}",
+      "category: ${4|learning,games,wota,anime|}",
+      "subcategory: ${5:子主题}",
+      "contentType: ${6|note,experience,solution,review,summary,work|}",
+      "spoiler: ${7|false,true|}",
+      "description: ${8:文章摘要}",
+      "---"
     ],
-    "description": "Adds the frontmatter block for the AstroPaper Blog post"
+    "description": "插入当前网站可用的博客 Frontmatter；WOTA艺文章还需填写 wotaSection。"
   },
-  "Blog Template": {
+  "博客文章框架": {
     "scope": "markdown",
     "prefix": "template",
     "body": [
-      "${1:frontmatter}",
+      "---",
+      "pubDatetime: $CURRENT_YEAR-$CURRENT_MONTH-${CURRENT_DATE}T$CURRENT_HOUR:$CURRENT_MINUTE:$CURRENT_SECOND.000$CURRENT_TIMEZONE_OFFSET",
+      "title: ${1:文章标题}",
+      "draft: ${2|true,false|}",
+      "tags:",
+      "  - ${3:标签}",
+      "category: ${4|learning,games,wota,anime|}",
+      "subcategory: ${5:子主题}",
+      "contentType: ${6|note,experience,solution,review,summary,work|}",
+      "spoiler: ${7|false,true|}",
+      "description: ${8:文章摘要}",
+      "---",
       "",
-      "${2: Introductory Sentence}",
+      "## 目录",
       "",
-      "## Table of contents",
+      "## 概述",
       "",
-      "## ${3: heading 1}",
+      "## 正文",
+      "",
+      "## 参考资料"
     ],
-    "description": "Adds the template for the AstroPaper Blog post. You will need to trigger the snippet modal on the 'frontmatter' line to insert the other snipper."
+    "description": "插入中文博客文章的基础 Frontmatter、目录和正文框架。"
+  },
+  "代码块": {
+    "scope": "markdown",
+    "prefix": "codeblock",
+    "body": ["```${1|text,typescript,javascript,python,java,cpp,c,json,yaml,bash,powershell|}", "$2", "```"],
+    "description": "插入带语言标记的代码块。"
+  },
+  "行内数学公式": {
+    "scope": "markdown",
+    "prefix": "math-inline",
+    "body": ["\\$${1:公式}\\$"],
+    "description": "插入 KaTeX 行内数学公式。"
+  },
+  "块级数学公式": {
+    "scope": "markdown",
+    "prefix": "math-block",
+    "body": ["\\$\\$", "${1:公式}", "\\$\\$"],
+    "description": "插入 KaTeX 块级数学公式。"
+  },
+  "Markdown 链接": {
+    "scope": "markdown",
+    "prefix": "md-link",
+    "body": ["[${1:显示文字}](${2:网址})"],
+    "description": "插入普通来源链接或站内链接。"
   }
 }

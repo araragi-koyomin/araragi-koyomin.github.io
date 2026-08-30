@@ -1,0 +1,39 @@
+---
+import {
+  CONTENT_CATEGORIES,
+  type ContentCategoryKey,
+} from "@/constants/content";
+
+export interface Props {
+  current?: ContentCategoryKey;
+}
+
+const { current } = Astro.props;
+---
+
+<nav aria-label="内容栏目" class="mb-8">
+  <ul class="flex flex-wrap gap-2">
+    {
+      CONTENT_CATEGORIES.map(category => {
+        const isCurrent = category.key === current;
+
+        return (
+          <li>
+            <a
+              href={category.href}
+              aria-current={isCurrent ? "page" : undefined}
+              class:list={[
+                "inline-flex min-h-11 items-center rounded-full border px-4 py-2 text-sm font-medium",
+                isCurrent
+                  ? "border-accent bg-accent text-background underline decoration-2 underline-offset-4"
+                  : "border-border hover:border-accent hover:text-accent",
+              ]}
+            >
+              {category.label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>

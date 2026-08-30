@@ -58,6 +58,10 @@ html[data-theme="dark"] {
   @apply max-w-3xl;
 }
 
+@utility max-w-shell {
+  @apply max-w-6xl;
+}
+
 .active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-4;
 }

@@ -1,0 +1,126 @@
+---
+import type { CollectionEntry } from "astro:content";
+import {
+  getContentCategory,
+  getContentTypeLabel,
+  getGameSubcategory,
+} from "@/constants/content";
+import {
+  CELESTE_MAP_SUMMARY_PATH,
+  getCelesteCollection,
+} from "@/constants/celeste";
+import { getWotaSection } from "@/constants/wota";
+
+export interface Props {
+  data: CollectionEntry<"blog">["data"];
+  compact?: boolean;
+}
+
+const { data, compact = false } = Astro.props;
+const category = getContentCategory(data.category);
+const contentType = getContentTypeLabel(data.contentType);
+const game = data.category === "games" && getGameSubcategory(data.subcategory);
+const wotaSection = getWotaSection(data.wotaSection);
+const celesteCollection = getCelesteCollection(data.celesteCollection);
+const items = [
+  category && { label: "栏目", value: category.label, href: category.href },
+  game && { label: "游戏", value: game.label, href: game.href },
+  wotaSection && {
+    label: "分类",
+    value: wotaSection.label,
+    href: `/posts/wota/#${wotaSection.key}`,
+  },
+  contentType && { label: "类型", value: contentType },
+  !compact &&
+    celesteCollection && {
+      label: "地图合集",
+      value: celesteCollection.name,
+      href: `${CELESTE_MAP_SUMMARY_PATH}?collection=${encodeURIComponent(celesteCollection.id)}`,
+    },
+  !compact &&
+    data.celesteDifficulty && {
+      label: "地图难度",
+      value: data.celesteDifficulty,
+    },
+  !compact &&
+    data.celesteGameplay && {
+      label: "主要 Gameplay",
+      value: data.celesteGameplay,
+    },
+  data.status && { label: "进度", value: data.status },
+  data.rating !== undefined && {
+    label: "评分",
+    value: `${data.rating.toFixed(1)} / 10`,
+  },
+  data.recommendationScore !== undefined && {
+    label: "推荐度",
+    value: `${data.recommendationScore.toFixed(1)} / 10`,
+  },
+].filter(Boolean) as { label: string; value: string; href?: string }[];
+---
+
+{
+  items.length > 0 && (
+    <dl
+      aria-label="文章信息"
+      class:list={[
+        "flex flex-wrap gap-x-4 gap-y-2 text-sm",
+        compact ? "mt-2 opacity-80" : "my-4 rounded-lg bg-muted/30 p-4",
+      ]}
+    >
+      {items.map(item => (
+        <div class="flex gap-1">
+          <dt class="font-medium opacity-75">{item.label}：</dt>
+          <dd>
+            {item.href ? (
+              <a
+                href={item.href}
+                class="text-accent underline decoration-dashed underline-offset-4"
+              >
+                {item.value}
+              </a>
+            ) : (
+              item.value
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+{
+  !compact && data.spoiler && (
+    <aside
+      aria-labelledby="spoiler-warning-title"
+      class="my-6 rounded-lg border-s-4 border-accent bg-muted/35 p-4"
+    >
+      <h2 id="spoiler-warning-title" class="font-semibold">
+        剧透提醒
+      </h2>
+      <p class="mt-1 text-sm leading-6">
+        本文包含可能影响初次观看或游玩体验的内容，请根据自己的情况继续阅读。
+      </p>
+    </aside>
+  )
+}
+
+{
+  !compact && data.sourceLinks && data.sourceLinks.length > 0 && (
+    <nav aria-label="相关来源" class="my-6">
+      <h2 class="font-semibold">相关来源</h2>
+      <ul class="mt-2 list-inside list-disc space-y-1">
+        {data.sourceLinks.map(source => (
+          <li>
+            <a
+              href={source.url}
+              class="text-accent underline decoration-dashed underline-offset-4"
+            >
+              {source.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

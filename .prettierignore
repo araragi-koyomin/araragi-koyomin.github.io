@@ -12,3 +12,6 @@
 !.prettierrc
 !eslint.config.js
 !README.md
+
+# Editorial Markdown keeps author-controlled line wrapping and code layout.
+/src/data/blog/**/*.md

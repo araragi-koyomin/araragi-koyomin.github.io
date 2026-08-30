@@ -2,7 +2,7 @@ name: Deploy by Astro
 
 on:
   push:
-    branches: [ "main" ] # 🚨 每次向 astro-paper 分支 push 就触发部署
+    branches: ["main"] # 🚨 每次向 astro-paper 分支 push 就触发部署
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: "📦 Install dependencies"
         run: pnpm install

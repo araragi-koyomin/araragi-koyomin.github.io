@@ -5,26 +5,32 @@ import { SITE } from "@/config";
 interface StringTitleProp {
   pageTitle: string;
   pageDesc?: string;
+  width?: "reading" | "wide";
 }
 
 interface ArrayTitleProp {
   pageTitle: [string, string];
   titleTransition: string;
   pageDesc?: string;
+  width?: "reading" | "wide";
 }
 
 export type Props = StringTitleProp | ArrayTitleProp;
 
 const { props } = Astro;
+const width = props.width ?? "reading";
 
 const backUrl = SITE.showBackButton ? Astro.url.pathname : "/";
 ---
 
-<Breadcrumb />
+<Breadcrumb {width} />
 <main
   data-backUrl={backUrl}
   id="main-content"
-  class="mx-auto w-full max-w-app px-4 pb-4"
+  class:list={[
+    "mx-auto w-full px-4 pb-4",
+    width === "wide" ? "max-w-shell" : "max-w-app",
+  ]}
 >
   {
     "titleTransition" in props ? (

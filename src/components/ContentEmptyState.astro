@@ -1,0 +1,21 @@
+---
+export interface Props {
+  message: string;
+}
+
+const { message } = Astro.props;
+---
+
+<section
+  aria-labelledby="empty-state-title"
+  class="rounded-xl border border-dashed border-border bg-muted/25 px-5 py-10 text-center"
+>
+  <h2 id="empty-state-title" class="text-xl font-semibold">这个栏目还在整理</h2>
+  <p class="mx-auto mt-3 max-w-xl leading-7 opacity-80">{message}</p>
+  <a
+    href="/posts/"
+    class="mt-6 inline-flex min-h-11 items-center rounded-md border border-accent px-4 py-2 font-medium text-accent hover:bg-accent hover:text-background"
+  >
+    返回文章总览
+  </a>
+</section>

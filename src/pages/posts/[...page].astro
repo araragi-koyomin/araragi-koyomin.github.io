@@ -7,22 +7,66 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
+import ContentCategoryGrid from "@/components/ContentCategoryGrid.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
+import getCategoryCounts from "@/utils/getCategoryCounts";
 import { SITE } from "@/config";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog", ({ data }) => !data.draft);
-  return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
+  const sortedPosts = getSortedPosts(posts);
+  const categoryCounts = getCategoryCounts(sortedPosts);
+
+  return paginate(sortedPosts, {
+    pageSize: SITE.postPerPage,
+    props: { categoryCounts },
+  });
 }) satisfies GetStaticPaths;
 
-const { page } = Astro.props;
+const { page, categoryCounts } = Astro.props;
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout
+  title={`文章 | ${SITE.title}`}
+  description="浏览全部文章与四个长期内容栏目。"
+>
   <Header />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+  <Main pageTitle="文章" pageDesc="浏览全部文章，或从内容栏目开始查找。">
+    {
+      page.currentPage === 1 && (
+        <>
+          <section aria-labelledby="category-overview-title" class="mb-10">
+            <h2 id="category-overview-title" class="mb-5 text-xl font-semibold">
+              内容栏目
+            </h2>
+            <ContentCategoryGrid counts={categoryCounts} />
+          </section>
+          <nav aria-label="文章辅助导航" class="mb-10 flex flex-wrap gap-3">
+            <a
+              href="/tags/"
+              class="inline-flex min-h-11 items-center rounded-md border border-border px-4 py-2 hover:border-accent hover:text-accent"
+            >
+              按标签浏览
+            </a>
+            {SITE.showArchives && (
+              <a
+                href="/archives/"
+                class="inline-flex min-h-11 items-center rounded-md border border-border px-4 py-2 hover:border-accent hover:text-accent"
+              >
+                按时间归档
+              </a>
+            )}
+          </nav>
+          <h2 class="text-xl font-semibold">全部文章</h2>
+        </>
+      )
+    }
     <ul>
-      {page.data.map(data => <Card {...data} />)}
+      {
+        page.data.map(data => (
+          <Card variant={page.currentPage === 1 ? "h3" : "h2"} {...data} />
+        ))
+      }
     </ul>
   </Main>
 

@@ -6,6 +6,7 @@ layer: cold
 status: completed
 created: 2026-08-30
 updated: 2026-08-30
+archived_at: 2026-08-30
 completed: 2026-08-30
 related:
   - CONTENT-001

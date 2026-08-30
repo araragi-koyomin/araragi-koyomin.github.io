@@ -1,0 +1,112 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import ContentBrowseNav from "@/components/ContentBrowseNav.astro";
+import ContentCategoryNav from "@/components/ContentCategoryNav.astro";
+import {
+  CONTENT_CATEGORIES,
+  type ContentCategoryDefinition,
+} from "@/constants/content";
+import {
+  getCategoryBrowseFacets,
+  type ContentBrowseFacetKey,
+} from "@/utils/getCategoryBrowseFacets";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
+
+interface Props {
+  category: ContentCategoryDefinition;
+  facet: ContentBrowseFacetKey;
+  facetLabel: string;
+}
+
+export const getStaticPaths = (async () => {
+  const posts = getSortedPosts(await getCollection("blog"));
+
+  return CONTENT_CATEGORIES.flatMap(category => {
+    const categoryPosts = posts.filter(
+      post => post.data.category === category.key
+    );
+
+    return getCategoryBrowseFacets(category.key, categoryPosts).map(group => ({
+      params: { category: category.key, facet: group.key },
+      props: { category, facet: group.key, facetLabel: group.label },
+    }));
+  });
+}) satisfies GetStaticPaths;
+
+const { category, facet, facetLabel } = Astro.props;
+const allPosts = getSortedPosts(await getCollection("blog"));
+const categoryPosts = allPosts.filter(
+  post => post.data.category === category.key
+);
+const group = getCategoryBrowseFacets(category.key, categoryPosts).find(
+  item => item.key === facet
+);
+const items = group?.items ?? [];
+const pageTitle = `${category.label} · ${facetLabel}`;
+const pageDescription = `按${facetLabel}浏览${category.label}栏目文章。`;
+---
+
+<Layout title={`${pageTitle} | ${SITE.title}`} description={pageDescription}>
+  <Header />
+  <Main pageTitle={pageTitle} pageDesc={pageDescription} width="wide">
+    <ContentCategoryNav current={category.key} />
+    <div
+      class="grid gap-8 lg:grid-cols-[minmax(15rem,18rem)_minmax(0,1fr)] lg:items-start lg:gap-10"
+    >
+      <ContentBrowseNav
+        category={category}
+        posts={categoryPosts}
+        activeFacet={facet}
+      />
+      <section
+        aria-labelledby="facet-options-title"
+        class="mx-0 max-w-none min-w-0 px-0"
+      >
+        <h2 id="facet-options-title" class="text-xl font-semibold">
+          选择{facetLabel}
+        </h2>
+        {
+          items.length > 0 ? (
+            <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+              {items.map(item => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="flex min-h-11 items-center justify-between gap-4 rounded-xl border border-border px-4 py-3 font-medium hover:border-accent hover:text-accent"
+                  >
+                    <span class="min-w-0 break-words">{item.label}</span>
+                    <span
+                      class="shrink-0 text-sm font-normal opacity-75"
+                      aria-label={`${item.count} 篇文章`}
+                    >
+                      {item.count} 篇
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div class="mt-5 rounded-xl border border-dashed border-border p-6">
+              <p class="leading-7 opacity-80">
+                这个栏目暂时没有可用的{facetLabel}入口；发布文章后会自动生成。
+              </p>
+              <a
+                href={category.href}
+                class="mt-4 inline-flex min-h-11 items-center text-accent underline decoration-dashed underline-offset-4"
+              >
+                返回{category.label}栏目
+              </a>
+            </div>
+          )
+        }
+      </section>
+    </div>
+  </Main>
+  <Footer />
+</Layout>

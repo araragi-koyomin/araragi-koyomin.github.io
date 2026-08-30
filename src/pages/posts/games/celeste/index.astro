@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import ContentCategoryNav from "@/components/ContentCategoryNav.astro";
+import CelesteMapTable from "@/components/CelesteMapTable.astro";
+import {
+  getCelesteCollection,
+  type CelesteMapSummaryItem,
+} from "@/constants/celeste";
+import { getPath } from "@/utils/getPath";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
+
+const pageTitle = "Celeste 地图汇总";
+const pageDescription =
+  "整理我游玩过的 Celeste 模组地图，并按合集、难度、主要玩法和个人评分提供查找与比较。";
+const posts = getSortedPosts(
+  await getCollection(
+    "blog",
+    ({ data }) => data.category === "games" && data.subcategory === "celeste"
+  )
+);
+const titleCollator = new Intl.Collator("zh-CN", {
+  numeric: true,
+  sensitivity: "base",
+});
+const maps: CelesteMapSummaryItem[] = posts
+  .map(post => ({
+    id: post.id,
+    href: getPath(post.id, post.filePath),
+    title: post.data.title,
+    description: post.data.description,
+    collection: getCelesteCollection(post.data.celesteCollection)!,
+    difficulty: post.data.celesteDifficulty!,
+    gameplay: post.data.celesteGameplay!,
+    rating: post.data.rating!,
+  }))
+  .sort(
+    (a, b) => b.rating - a.rating || titleCollator.compare(a.title, b.title)
+  );
+---
+
+<Layout title={`${pageTitle} | ${SITE.title}`} description={pageDescription}>
+  <Header />
+  <Main {pageTitle} pageDesc={pageDescription} width="wide">
+    <ContentCategoryNav current="games" />
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <a
+        href="/posts/games/"
+        class="inline-flex min-h-11 items-center text-accent underline decoration-dashed underline-offset-4"
+      >
+        ← 返回游戏栏目
+      </a>
+      <p class="text-sm leading-6 opacity-75">
+        每张地图对应一篇详细记录；新增并发布文章后会自动加入汇总。
+      </p>
+    </div>
+    <CelesteMapTable {maps} />
+  </Main>
+  <Footer />
+</Layout>

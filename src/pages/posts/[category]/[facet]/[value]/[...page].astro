@@ -1,0 +1,116 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Main from "@/layouts/Main.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import ContentBrowseNav from "@/components/ContentBrowseNav.astro";
+import ContentCategoryNav from "@/components/ContentCategoryNav.astro";
+import Pagination from "@/components/Pagination.astro";
+import {
+  CONTENT_CATEGORIES,
+  type ContentCategoryDefinition,
+} from "@/constants/content";
+import {
+  filterPostsByCategoryFacet,
+  getCategoryBrowseFacets,
+  type ContentBrowseFacetKey,
+} from "@/utils/getCategoryBrowseFacets";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
+
+interface Props {
+  page: Page<CollectionEntry<"blog">>;
+  category: ContentCategoryDefinition;
+  facet: ContentBrowseFacetKey;
+  facetGroupLabel: string;
+  facetValueLabel: string;
+}
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = getSortedPosts(await getCollection("blog"));
+
+  return CONTENT_CATEGORIES.flatMap(category => {
+    const categoryPosts = posts.filter(
+      post => post.data.category === category.key
+    );
+    const groups = getCategoryBrowseFacets(category.key, categoryPosts);
+
+    return groups.flatMap(group =>
+      group.items.flatMap(item => {
+        const generatedRoute = `/posts/${category.key}/${group.key}/${item.value}/`;
+        if (item.href !== generatedRoute) return [];
+
+        return paginate(
+          filterPostsByCategoryFacet(
+            categoryPosts,
+            category.key,
+            group.key,
+            item.value
+          ),
+          {
+            params: {
+              category: category.key,
+              facet: group.key,
+              value: item.value,
+            },
+            props: {
+              category,
+              facet: group.key,
+              facetGroupLabel: group.label,
+              facetValueLabel: item.label,
+            },
+            pageSize: SITE.postPerPage,
+          }
+        );
+      })
+    );
+  });
+}) satisfies GetStaticPaths;
+
+const { page, category, facet, facetGroupLabel, facetValueLabel } = Astro.props;
+const allPosts = getSortedPosts(await getCollection("blog"));
+const categoryPosts = allPosts.filter(
+  post => post.data.category === category.key
+);
+const pageTitle = `${category.label} · ${facetValueLabel}`;
+const pageDescription = `浏览${category.label}栏目中${facetGroupLabel}为“${facetValueLabel}”的文章。`;
+---
+
+<Layout title={`${pageTitle} | ${SITE.title}`} description={pageDescription}>
+  <Header />
+  <Main pageTitle={pageTitle} pageDesc={pageDescription} width="wide">
+    <ContentCategoryNav current={category.key} />
+    <div
+      class="grid gap-8 lg:grid-cols-[minmax(15rem,18rem)_minmax(0,1fr)] lg:items-start lg:gap-10"
+    >
+      <ContentBrowseNav
+        category={category}
+        posts={categoryPosts}
+        activeFacet={facet}
+        activeValue={Astro.params.value}
+      />
+      <section
+        aria-labelledby="filtered-posts-title"
+        class="mx-0 max-w-none min-w-0 px-0"
+      >
+        <div class="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 id="filtered-posts-title" class="text-xl font-semibold">
+            {facetGroupLabel}：{facetValueLabel}
+          </h2>
+          <p class="text-sm opacity-70">
+            共 {page.total} 篇，按最近更新排序
+          </p>
+        </div>
+        <ul class="divide-y divide-border">
+          {page.data.map(data => <Card variant="h3" {...data} />)}
+        </ul>
+      </section>
+    </div>
+  </Main>
+
+  <Pagination {page} />
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>

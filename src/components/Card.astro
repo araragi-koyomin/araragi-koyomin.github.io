@@ -3,6 +3,7 @@ import { slugifyStr } from "@/utils/slugify";
 import type { CollectionEntry } from "astro:content";
 import { getPath } from "@/utils/getPath";
 import Datetime from "./Datetime.astro";
+import PostMetadata from "./PostMetadata.astro";
 
 export interface Props extends CollectionEntry<"blog"> {
   variant?: "h2" | "h3";
@@ -31,6 +32,7 @@ const headerProps = {
       )
     }
   </a>
+  <PostMetadata {data} compact />
   <Datetime {pubDatetime} {modDatetime} {timezone} />
-  <p>{description}</p>
+  <p class="mt-1 leading-7 opacity-90">{description}</p>
 </li>

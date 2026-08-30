@@ -1,0 +1,139 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type {
+  ContentCategoryDefinition,
+  ContentCategoryKey,
+} from "@/constants/content";
+import {
+  getCategoryBrowseFacets,
+  type ContentBrowseFacetKey,
+} from "@/utils/getCategoryBrowseFacets";
+import { WOTA_SECTIONS } from "@/constants/wota";
+
+export interface Props {
+  category: ContentCategoryDefinition;
+  posts: CollectionEntry<"blog">[];
+  activeFacet?: ContentBrowseFacetKey;
+  activeValue?: string;
+}
+
+const { category, posts, activeFacet, activeValue } = Astro.props;
+const groups = getCategoryBrowseFacets(
+  category.key as ContentCategoryKey,
+  posts
+).filter(group => group.items.length > 0);
+const localLinks =
+  category.key === "wota"
+    ? WOTA_SECTIONS.map(section => ({
+        href: `${category.href}#${section.key}`,
+        label: section.label,
+        count: posts.filter(post => post.data.wotaSection === section.key)
+          .length,
+      }))
+    : [];
+
+const linkClasses =
+  "flex min-h-11 items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-medium outline-offset-2";
+---
+
+<aside
+  aria-labelledby="category-browse-title"
+  class="rounded-2xl bg-muted/30 p-4 lg:sticky lg:top-6"
+>
+  <h2 id="category-browse-title" class="text-lg font-semibold">浏览此栏目</h2>
+  <nav class="mt-3" aria-label={`${category.label}栏目浏览方式`}>
+    <ul>
+      <li>
+        <a
+          href={category.href}
+          aria-current={!activeFacet ? "page" : undefined}
+          class:list={[
+            linkClasses,
+            !activeFacet
+              ? "bg-accent text-background underline decoration-2 underline-offset-4"
+              : "hover:bg-muted hover:text-accent",
+          ]}
+        >
+          <span>全部文章</span>
+          <span
+            class="font-normal opacity-80"
+            aria-label={`${posts.length} 篇文章`}
+          >
+            {posts.length}
+          </span>
+        </a>
+      </li>
+    </ul>
+
+    {
+      localLinks.length > 0 && (
+        <div class="mt-5">
+          <h3 class="px-3 text-sm font-semibold opacity-70">内容分类</h3>
+          <ul class="mt-1 grid gap-1 sm:grid-cols-2 lg:grid-cols-1">
+            {localLinks.map(item => (
+              <li>
+                <a
+                  href={item.href}
+                  class:list={[linkClasses, "hover:bg-muted hover:text-accent"]}
+                >
+                  <span class="min-w-0 break-words">{item.label}</span>
+                  <span
+                    class="shrink-0 font-normal opacity-80"
+                    aria-label={`${item.count} 篇文章`}
+                  >
+                    {item.count}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+
+    {
+      groups.map(group => (
+        <div class="mt-5">
+          <h3 class="px-3 text-sm font-semibold opacity-70">{group.label}</h3>
+          <ul class="mt-1 grid gap-1 sm:grid-cols-2 lg:grid-cols-1">
+            {group.items.map(item => {
+              const isCurrent =
+                activeFacet === group.key && activeValue === item.value;
+
+              return (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={isCurrent ? "page" : undefined}
+                    class:list={[
+                      linkClasses,
+                      isCurrent
+                        ? "bg-accent text-background underline decoration-2 underline-offset-4"
+                        : "hover:bg-muted hover:text-accent",
+                    ]}
+                  >
+                    <span class="min-w-0 break-words">{item.label}</span>
+                    <span
+                      class="shrink-0 font-normal opacity-80"
+                      aria-label={`${item.count} 篇文章`}
+                    >
+                      {item.count}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))
+    }
+
+    {
+      groups.length === 0 && localLinks.length === 0 && (
+        <p class="mt-4 px-3 text-sm leading-6 opacity-75">
+          发布文章后，这里会自动生成标签、类型和时间入口。
+        </p>
+      )
+    }
+  </nav>
+</aside>
