@@ -18,6 +18,7 @@ docs/
 ├── BACKLOG.md                    热层：唯一活跃事项索引
 ├── PROJECT.md                    温层：长期项目目标与需求基线
 ├── DOCUMENTATION.md              温层：文档治理规则
+├── DEPLOYMENT.md                 温层：生产验证、手动发布和故障排查
 ├── plans/                        温层：必要时创建的跨文件/跨回合计划
 └── archive/<年份>/               冷层：完成、取消或被替代的文档
 ```

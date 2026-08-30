@@ -1,14 +1,20 @@
 name: Deploy by Astro
 
 on:
-  push:
-    branches: ["main"] # 🚨 每次向 astro-paper 分支 push 就触发部署
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
 
 jobs:
   build:
     name: Build and Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
 
     strategy:
       matrix:
@@ -16,28 +22,49 @@ jobs:
 
     steps:
       - name: "☁️ Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: "📦 Install pnpm"
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6.0.10
         with:
-          version: 10
+          version: 10.33.0
 
       - name: "📦 Use Node.js ${{ matrix.node-version }}"
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.0.0
         with:
           node-version: ${{ matrix.node-version }}
           cache: "pnpm"
 
       - name: "📦 Install dependencies"
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: "🚀 Build the project"
         run: pnpm run build
 
+      - name: "🔎 Verify critical pages"
+        shell: bash
+        run: |
+          required_files=(
+            "dist/index.html"
+            "dist/posts/index.html"
+            "dist/posts/games/index.html"
+            "dist/posts/games/celeste/index.html"
+            "dist/posts/games/celeste/journeys-of-a-bygone-wanderer/index.html"
+            "dist/posts/games/minecraft/nova-engineering/index.html"
+            "dist/rss.xml"
+            "dist/pagefind/pagefind.js"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "::error file=$file::Expected production output is missing"
+              exit 1
+            fi
+          done
+
       - name: "🚢 Deploy to GitHub Pages"
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4.1.0
         with:
-          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./dist
