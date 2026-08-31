@@ -1,0 +1,23 @@
+---
+import { PUBLIC_LINKS } from "@/constants";
+---
+
+<ul class="flex flex-wrap gap-1" aria-label="公开链接">
+  {
+    PUBLIC_LINKS.map(link => (
+      <li>
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={link.linkTitle}
+          title={link.linkTitle}
+          class="group inline-block p-2 hover:rotate-6 hover:text-accent sm:p-1"
+        >
+          <link.icon class="inline-block size-6 scale-125 opacity-90 sm:scale-110" />
+          <span class="sr-only">{link.linkTitle}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

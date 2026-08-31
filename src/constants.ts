@@ -1,6 +1,8 @@
 import type { Props } from "astro";
 import IconMail from "@/assets/icons/IconMail.svg";
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import IconBrandBilibili from "@/assets/icons/IconBrandBilibili.svg";
+import IconBrandBangumi from "@/assets/icons/IconBrandBangumi.svg";
 import IconBrandX from "@/assets/icons/IconBrandX.svg";
 import IconWhatsapp from "@/assets/icons/IconWhatsapp.svg";
 import IconFacebook from "@/assets/icons/IconFacebook.svg";
@@ -15,10 +17,38 @@ interface Social {
   icon: (_props: Props) => Element;
 }
 
+export interface PublicLink {
+  name: string;
+  href: string;
+  linkTitle: string;
+  icon: (_props: Props) => Element;
+}
+
+export const PUBLIC_LINKS: PublicLink[] = [
+  {
+    name: "GitHub",
+    href: SITE.profile,
+    linkTitle: `在 GitHub 查看${SITE.author}的公开项目`,
+    icon: IconGitHub,
+  },
+  {
+    name: "Bilibili",
+    href: "https://space.bilibili.com/472676997",
+    linkTitle: `在 Bilibili 查看${SITE.author}的个人主页`,
+    icon: IconBrandBilibili,
+  },
+  {
+    name: "Bangumi",
+    href: "https://bgm.tv/user/708163",
+    linkTitle: `在 Bangumi 查看${SITE.author}的用户页`,
+    icon: IconBrandBangumi,
+  },
+] as const;
+
 export const SOCIALS: Social[] = [
   {
     name: "GitHub",
-    href: "https://github.com/araragi-koyomin",
+    href: SITE.profile,
     linkTitle: `在 GitHub 查看${SITE.author}的公开项目`,
     icon: IconGitHub,
   },

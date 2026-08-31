@@ -1,0 +1,24 @@
+<!-- Monochrome adaptation of Bangumi's official iOS icon: https://bgm.tv/img/ico/ico_ios.png -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class="icon icon-brand-bangumi"
+>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+  <path d="m8 2 4 4 4-4" />
+  <path d="M4 7h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H9l-3 3v-3H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
+  <g stroke-width="1.4">
+    <path d="m4.5 10.5 3 1.5-3 1.5" />
+    <path d="m19.5 10.5-3 1.5 3 1.5" />
+    <path d="M4.5 14.5h3" />
+    <path d="M16.5 14.5h3" />
+    <path d="m10 11 2 4 2-4z" />
+  </g>
+</svg>

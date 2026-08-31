@@ -5,7 +5,7 @@ type: governance
 layer: warm
 status: active
 created: 2026-08-30
-updated: 2026-08-30
+updated: 2026-09-01
 ---
 
 # GitHub Pages 发布说明
@@ -62,8 +62,8 @@ gh run watch --repo araragi-koyomin/araragi-koyomin.github.io --exit-status
 ```
 
 工作流会严格按照 `pnpm-lock.yaml` 安装依赖、执行生产构建，并确认首页、文章总览、游戏
-栏目、Celeste 汇总、两篇游戏文章、RSS 和 Pagefind 搜索产物存在。任何检查失败都会在
-写入 `gh-pages` 前停止。
+栏目、Celeste 汇总、三篇 Celeste 地图文章、Minecraft《新星工程》文章、RSS 和
+Pagefind 搜索产物存在。任何检查失败都会在写入 `gh-pages` 前停止。
 
 ## 线上核对
 

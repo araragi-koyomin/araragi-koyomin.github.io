@@ -5,7 +5,7 @@ type: plan
 layer: warm
 status: active
 created: 2026-08-30
-updated: 2026-08-30
+updated: 2026-09-01
 related:
   - CONTENT-001
   - CONTENT-002
@@ -93,6 +93,7 @@ related:
 | `recommendationScore` | 作者愿意向目标读者推荐它的程度 | 十分制，允许小数，考虑受众匹配和入门门槛等因素 |
 | `spoiler` | 提醒文章是否包含剧透 | 游戏和动漫使用布尔值 |
 | `sourceLinks` | 指向题目、地图、整合包或作品来源 | 选填；每项保存显示名称与网址 |
+| `celesteVideoUrl` | 指向该 Celeste 地图游玩视频的 Bilibili 网址 | Celeste 地图文章选填；只在文章详情页显示 |
 | `heroImage` | 在文章元数据与正文之间显示独立封面图 | 选填，只使用项目媒体库中的本地图片 |
 | `heroImageAlt` | 用文字说明封面图表达的内容 | 公开文章设置封面时必填 |
 | `heroImageCaption` | 在封面图下方补充来源或简短说明 | 选填；未设置封面时不得单独填写 |
@@ -128,6 +129,10 @@ Markdown 图片展示。
 - 三个专用字段分别是 `celesteCollection`、`celesteDifficulty` 和 `celesteGameplay`。
   合集字段只保存稳定编号；合集显示名称和颜色统一保存在
   `src/data/celeste-collections.json`，该文件同时供 Front Matter CMS 和公开页面读取。
+- `celesteVideoUrl` 是 Celeste 地图文章的可选 Bilibili 游玩视频网址。它与地图汇总表的
+  结构化比较字段分开维护，只在文章元数据/封面之后、正文之前显示“游玩视频”入口；未
+  填写时不显示空占位。该字段只允许出现在 Celeste 地图文章中，其他文章填写会被内容
+  校验拒绝。
 - Celeste 合集使用集中注册表，统一维护显示名称和颜色；文章只选择合集，不逐篇保存
   颜色。同一合集在筛选、桌面表格和手机卡片中使用一致标记；颜色始终与文字同时出现，
   “独立地图”使用中性灰色。

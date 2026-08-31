@@ -12,6 +12,7 @@ contentType: review
 celesteCollection: canvas-contest
 celesteDifficulty: 画布紫/酱五绿
 celesteGameplay: 冰块刷新机制、果冻水晶
+celesteVideoUrl: https://www.bilibili.com/video/BV1y7tP6sEPv
 rating: 6.0
 recommendationScore: 7.5
 spoiler: false

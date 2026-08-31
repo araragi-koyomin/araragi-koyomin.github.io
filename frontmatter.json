@@ -313,6 +313,18 @@
           }
         },
         {
+          "title": "Bilibili 游玩视频",
+          "name": "celesteVideoUrl",
+          "description": "可选；填写这张 Celeste 地图游玩视频的完整 Bilibili 网址。",
+          "type": "string",
+          "single": true,
+          "when": {
+            "fieldRef": "subcategory",
+            "operator": "eq",
+            "value": "celeste"
+          }
+        },
+        {
           "title": "WOTA艺分区",
           "name": "wotaSection",
           "description": "只有 WOTA艺文章需要选择。",

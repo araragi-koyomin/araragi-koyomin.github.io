@@ -35,6 +35,7 @@ const blog = defineCollection({
           .optional(),
         celesteDifficulty: z.string().min(1).optional(),
         celesteGameplay: z.string().min(1).optional(),
+        celesteVideoUrl: z.string().url().optional(),
         spoiler: z.boolean().default(false),
         sourceLinks: z
           .array(
@@ -73,14 +74,21 @@ const blog = defineCollection({
 
         const isCelesteMap =
           data.category === "games" && data.subcategory === "celeste";
-        const celesteFields = [
+        const celesteRequiredFields = [
           ["celesteCollection", data.celesteCollection],
           ["celesteDifficulty", data.celesteDifficulty],
           ["celesteGameplay", data.celesteGameplay],
         ] as const;
+        const celesteOptionalFields = [
+          ["celesteVideoUrl", data.celesteVideoUrl],
+        ] as const;
+        const celesteFields = [
+          ...celesteRequiredFields,
+          ...celesteOptionalFields,
+        ] as const;
 
         if (isCelesteMap && !data.draft) {
-          celesteFields.forEach(([field, value]) => {
+          celesteRequiredFields.forEach(([field, value]) => {
             if (!value) {
               context.addIssue({
                 code: z.ZodIssueCode.custom,

@@ -31,6 +31,7 @@ const {
   heroImage,
   heroImageAlt,
   heroImageCaption,
+  celesteVideoUrl,
   ogImage: initOgImage,
   canonicalURL,
   pubDatetime,
@@ -132,6 +133,24 @@ const nextPost =
             </figcaption>
           )}
         </figure>
+      )
+    }
+    {
+      celesteVideoUrl && (
+        <aside class="mt-6 rounded-xl border border-border bg-muted/20 p-4">
+          <p class="text-sm font-medium opacity-75">游玩视频</p>
+          <a
+            href={celesteVideoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 inline-flex min-h-10 items-center rounded-lg border border-accent px-4 py-2 font-medium text-accent hover:bg-accent hover:text-background"
+          >
+            在 Bilibili 观看这张地图的游玩视频
+            <span aria-hidden="true" class="ms-1">
+              ↗
+            </span>
+          </a>
+        </aside>
       )
     }
     <article

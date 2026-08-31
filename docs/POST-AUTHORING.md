@@ -5,7 +5,7 @@ type: plan
 layer: warm
 status: in_progress
 created: 2026-08-30
-updated: 2026-08-30
+updated: 2026-09-01
 related:
   - AUTHOR-001
   - AUTHOR-002
@@ -59,6 +59,8 @@ Celeste 地图另有专用模板 `.frontmatter/templates/celeste-map.md`。在 V
 - 只有主栏目为 `wota` 时显示的 `wotaSection` 条件字段。
 - `subcategory` 为 `celeste` 时显示合集、地图难度和主要 gameplay 字段；合集可从
   `src/data/celeste-collections.json` 集中注册表搜索选择，文章只保存合集稳定编号。
+- `subcategory` 为 `celeste` 时还显示可选的 `celesteVideoUrl`，用于填写该地图的完整
+  Bilibili 游玩视频网址；未填写时文章不显示视频入口。
 - 可搜索选择的标签字段，以及包含 7 个初始值的 `subcategories` 自定义分类注册表。
 - 媒体库、剪贴板图片导入入口和要求填写替代文字的媒体元数据字段。
 - 代码块、行内与块级数学公式、普通 Markdown 链接和常用正文结构片段。
@@ -118,7 +120,8 @@ src/data/blog/<主栏目>/<子主题>/<文件名>.md
 - 游戏和动漫：优先显示剧透、评分、推荐度与状态，但不强制短记录填写评价。
 - Celeste 地图：选择 `subcategory: celeste` 后填写地图合集、地图难度和主要 gameplay；
   地图名使用 `title`，简评使用 `description`，总体评分使用 `rating`。草稿可以暂时缺少
-  上述字段，改为公开文章前必须补齐，否则 Astro 内容检查会明确报错。
+  上述必填字段，改为公开文章前必须补齐，否则 Astro 内容检查会明确报错。视频链接使用
+  可选字段 `celesteVideoUrl`，不影响地图汇总表的生成。
 - 学习：默认内容类型为笔记，仍允许题解、经历和汇总。
 - 标签和子主题：使用可搜索选择，不使用只能输入且无法发现已有值的自由文本框。
 
@@ -149,6 +152,21 @@ heroImageCaption: 可选的图片来源或补充说明
 封面会固定显示在文章日期和结构化元数据之后、Markdown 正文之前，并在桌面和手机上使用
 16:9 比例裁切。没有填写 `heroImage` 时不显示空占位。`ogImage` 仍然只控制社交平台的
 链接预览图片；如果希望同一张图片同时承担两种用途，需要分别设置两个字段。
+
+## Celeste 游玩视频链接
+
+Celeste 地图评价文章可以在 Front Matter CMS 的“Bilibili 游玩视频”字段中填写完整的
+视频网址，也可以直接在 Frontmatter 中写：
+
+```yaml
+celesteVideoUrl: https://www.bilibili.com/video/BV...
+```
+
+该字段只用于链接作者上传的单张地图游玩视频，不嵌入播放器，也不进入 Celeste 地图
+汇总表。公开文章中填写后，文章详情页会在元数据和封面之后、正文之前显示一个带明确
+名称的“在 Bilibili 观看这张地图的游玩视频”入口；链接会在新标签页打开。没有视频时
+省略该字段即可，不要填写空字符串或虚构网址。Front Matter CMS 的 Celeste 模板已用注释
+提示该字段，后续新文章可按需取消注释并填写。
 
 ### 首张真实封面验证
 

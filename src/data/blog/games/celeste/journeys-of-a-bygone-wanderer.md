@@ -18,6 +18,7 @@ recommendationScore: 10.0
 modDatetime: 2026-08-30T11:04:45.775Z
 heroImage: ../../../../assets/images/games/celeste/journeys-of-a-bygone-wanderer-cover.png
 heroImageAlt: nul
+celesteVideoUrl: https://www.bilibili.com/video/BV1u5Td6dEne
 ---
 
 ## 目录

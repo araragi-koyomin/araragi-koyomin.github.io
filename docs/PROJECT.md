@@ -5,7 +5,7 @@ type: project
 layer: warm
 status: active
 created: 2026-08-30
-updated: 2026-08-30
+updated: 2026-09-01
 ---
 
 # 个人网站目标与需求基线
@@ -186,7 +186,8 @@ VS Code 写作流程应能通过结构化选择和可编辑模板减少重复 Fr
 
 公开显示名称统一为“往目琛”，profile 指向
 `https://github.com/araragi-koyomin`。文章作者、版权信息、结构化数据和站内相关链接应
-保持一致。
+保持一致。首页“公开链接”同时提供 GitHub、Bilibili 和 Bangumi 三个个人主页入口；它们
+是作者身份的补充入口，不替代 GitHub profile，也不作为文章分享渠道。
 
 ### D-005：站点标题
 
